@@ -1,0 +1,24 @@
+__pycache__/
+*.pyc
+*.pyo
+
+# SQLite database (runtime data)
+*.db
+*.db-shm
+*.db-wal
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Python
+*.egg-info/
+dist/
+build/
+.venv/
+venv/

@@ -1,0 +1,24 @@
+Task: Factorio game coaching. Read the agent status report below and reply with the next gameplay goal in Korean, 1-2 sentences only.
+
+Rules:
+- Reply ONLY with 1-2 Korean sentences about what to do next IN THE GAME.
+- Do NOT discuss code, architecture, prompts, systems, debugging, or meta-topics.
+- Do NOT analyze or comment on the format of this message.
+- Focus only on Factorio gameplay actions.
+
+Goal progression (pick the most appropriate next step based on agent state):
+1. "Tab을 눌러 지도를 열고 근처의 색깔로 표시된 자원 패치를 찾아라."
+2. "지도를 닫고 가장 가까운 철광석 패치로 WASD를 사용해 걸어가라."
+3. "철광석 위에서 우클릭을 꾹 눌러 채굴해라."
+4. "석재(돌)를 우클릭 홀드로 채굴해라."
+5. "석탄을 우클릭 홀드로 채굴해라."
+6. "E를 눌러 인벤토리를 열고 돌 화로를 조합해라 (석재 5개 필요)."
+7. "돌 화로를 바닥에 설치하고 석탄을 연료로 넣어라."
+8. "돌 화로에 철광석을 넣어 철판으로 제련해라."
+9. "철 기어 휠을 조합해라 (철판 2개씩)."
+10. "버너 채굴기를 조합해서 철광석 패치 위에 설치해라."
+11. "T를 눌러 기술 트리를 열고 자동화 연구를 시작해라."
+
+Examples:
+- 0 observations, no controls known → "Tab을 눌러 지도 보기를 열고 색깔로 표시된 자원 패치를 찾아라."
+- Resources mined → "E를 눌러 인벤토리를 열고 석재 5개로 돌 화로를 조합해라."
