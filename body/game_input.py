@@ -142,28 +142,125 @@ class GameInput:
             return 0
         return _vk_to_scan(vk)
 
+    def _parse_combo(self, key: str) -> tuple[list[int], int]:
+        """Parse a key combo like 'ctrl+shift+c' into (modifier_scans, main_scan).
+
+        Returns (modifier_scans, main_scan). If no '+' is present, modifiers list is empty.
+        """
+        MODIFIER_NAMES = {"ctrl", "lctrl", "rctrl", "shift", "lshift", "rshift",
+                          "alt", "lalt", "ralt"}
+        parts = [p.strip() for p in key.split("+")]
+        if len(parts) == 1:
+            return [], self._get_scan(parts[0])
+        modifier_scans = []
+        for mod in parts[:-1]:
+            if mod.lower() not in MODIFIER_NAMES:
+                logger.warning("'%s' is not a modifier key in combo '%s'", mod, key)
+            scan = self._get_scan(mod)
+            if scan:
+                modifier_scans.append(scan)
+        main_scan = self._get_scan(parts[-1])
+        return modifier_scans, main_scan
+
+    def _parse_modifiers(self, modifiers: str) -> list[int]:
+        """Parse a modifier string like 'ctrl+shift' into a list of scan codes."""
+        if not modifiers:
+            return []
+        parts = [p.strip() for p in modifiers.split("+")]
+        scans = []
+        for mod in parts:
+            scan = self._get_scan(mod)
+            if scan:
+                scans.append(scan)
+            else:
+                logger.warning("Unknown modifier: '%s'", mod)
+        return scans
+
+    def _press_modifiers(self, mod_scans: list[int]) -> None:
+        """Press modifier keys down."""
+        for ms in mod_scans:
+            _send_input(_make_key_down(ms))
+        if mod_scans:
+            time.sleep(0.02)
+
+    def _release_modifiers(self, mod_scans: list[int]) -> None:
+        """Release modifier keys in reverse order."""
+        if mod_scans:
+            time.sleep(0.02)
+        for ms in reversed(mod_scans):
+            _send_input(_make_key_up(ms))
+
     def key_press(self, key: str) -> None:
-        scan = self._get_scan(key)
+        mod_scans, scan = self._parse_combo(key)
         if not scan:
             return
-        logger.debug("key_press: %s (scan=0x%02X)", key, scan)
+        logger.debug("key_press: %s (scan=0x%02X, mods=%s)", key, scan, mod_scans)
+        # Press modifiers down
+        for ms in mod_scans:
+            _send_input(_make_key_down(ms))
+        time.sleep(0.02) if mod_scans else None
+        # Press and release main key
         _send_input(_make_key_down(scan), _make_key_up(scan))
+        time.sleep(0.02) if mod_scans else None
+        # Release modifiers in reverse order
+        for ms in reversed(mod_scans):
+            _send_input(_make_key_up(ms))
 
     def key_hold(self, key: str, duration: float) -> None:
-        scan = self._get_scan(key)
+        mod_scans, scan = self._parse_combo(key)
         if not scan:
             return
-        logger.debug("key_hold: %s for %.1fs (scan=0x%02X)", key, duration, scan)
+        logger.debug("key_hold: %s for %.1fs (scan=0x%02X, mods=%s)", key, duration, scan, mod_scans)
+        # Press modifiers down
+        for ms in mod_scans:
+            _send_input(_make_key_down(ms))
+        time.sleep(0.02) if mod_scans else None
+        # Hold main key
         _send_input(_make_key_down(scan))
         time.sleep(duration)
         _send_input(_make_key_up(scan))
+        time.sleep(0.02) if mod_scans else None
+        # Release modifiers in reverse order
+        for ms in reversed(mod_scans):
+            _send_input(_make_key_up(ms))
 
-    def mouse_click(self, x: int, y: int, button: str = "left") -> None:
+    def keys_hold(self, keys: list[str], duration: float) -> None:
+        """Hold multiple keys simultaneously for a duration.
+
+        Args:
+            keys: List of key names (e.g. ['w', 'space'], ['s', 'space'])
+            duration: How long to hold all keys in seconds
+        """
+        scans = []
+        for key in keys:
+            scan = self._get_scan(key)
+            if scan:
+                scans.append(scan)
+            else:
+                logger.warning("keys_hold: unknown key '%s', skipping", key)
+        if not scans:
+            return
+        logger.debug("keys_hold: %s for %.1fs (scans=%s)", keys, duration, [hex(s) for s in scans])
+        # Press all keys down
+        for scan in scans:
+            _send_input(_make_key_down(scan))
+            time.sleep(0.01)
+        # Hold
+        time.sleep(duration)
+        # Release all keys in reverse order
+        for scan in reversed(scans):
+            _send_input(_make_key_up(scan))
+            time.sleep(0.01)
+
+    def mouse_click(self, x: int, y: int, button: str = "left", modifiers: str = "") -> None:
         sx, sy = self._screen_xy(x, y)
-        logger.debug("mouse_click: image(%d,%d) -> screen(%d,%d) %s", x, y, sx, sy, button)
+        mod_scans = self._parse_modifiers(modifiers)
+        logger.debug("mouse_click: image(%d,%d) -> screen(%d,%d) %s mods=%s", x, y, sx, sy, button, modifiers)
         # Move cursor
         ctypes.windll.user32.SetCursorPos(sx, sy)
         time.sleep(0.02)
+        # Press modifiers
+        self._press_modifiers(mod_scans)
         # Click
         if button == "right":
             down_flag, up_flag = MOUSEEVENTF_RIGHTDOWN, MOUSEEVENTF_RIGHTUP
@@ -176,12 +273,17 @@ class GameInput:
         inp_up.type = INPUT_MOUSE
         inp_up.union.mi.dwFlags = up_flag
         _send_input(inp_down, inp_up)
+        # Release modifiers
+        self._release_modifiers(mod_scans)
 
-    def mouse_hold(self, x: int, y: int, duration: float, button: str = "right") -> None:
+    def mouse_hold(self, x: int, y: int, duration: float, button: str = "right", modifiers: str = "") -> None:
         sx, sy = self._screen_xy(x, y)
-        logger.debug("mouse_hold: image(%d,%d) -> screen(%d,%d) %s %.1fs", x, y, sx, sy, button, duration)
+        mod_scans = self._parse_modifiers(modifiers)
+        logger.debug("mouse_hold: image(%d,%d) -> screen(%d,%d) %s %.1fs mods=%s", x, y, sx, sy, button, duration, modifiers)
         ctypes.windll.user32.SetCursorPos(sx, sy)
         time.sleep(0.02)
+        # Press modifiers
+        self._press_modifiers(mod_scans)
         if button == "right":
             down_flag, up_flag = MOUSEEVENTF_RIGHTDOWN, MOUSEEVENTF_RIGHTUP
         else:
@@ -195,15 +297,55 @@ class GameInput:
         inp_up.type = INPUT_MOUSE
         inp_up.union.mi.dwFlags = up_flag
         _send_input(inp_up)
+        # Release modifiers
+        self._release_modifiers(mod_scans)
+
+    def mouse_drag(self, x1: int, y1: int, x2: int, y2: int, duration: float = 0.5, button: str = "left") -> None:
+        """Drag mouse from (x1,y1) to (x2,y2) in image coordinates."""
+        sx1, sy1 = self._screen_xy(x1, y1)
+        sx2, sy2 = self._screen_xy(x2, y2)
+        logger.debug("mouse_drag: (%d,%d)->(%d,%d) screen(%d,%d)->(%d,%d) %s %.1fs",
+                      x1, y1, x2, y2, sx1, sy1, sx2, sy2, button, duration)
+        if button == "right":
+            down_flag, up_flag = MOUSEEVENTF_RIGHTDOWN, MOUSEEVENTF_RIGHTUP
+        else:
+            down_flag, up_flag = MOUSEEVENTF_LEFTDOWN, MOUSEEVENTF_LEFTUP
+        # Move to start position
+        ctypes.windll.user32.SetCursorPos(sx1, sy1)
+        time.sleep(0.02)
+        # Press button
+        inp_down = INPUT()
+        inp_down.type = INPUT_MOUSE
+        inp_down.union.mi.dwFlags = down_flag
+        _send_input(inp_down)
+        # Interpolate movement
+        steps = max(int(duration / 0.016), 5)  # ~60fps or at least 5 steps
+        for i in range(1, steps + 1):
+            t = i / steps
+            cx = int(sx1 + (sx2 - sx1) * t)
+            cy = int(sy1 + (sy2 - sy1) * t)
+            ctypes.windll.user32.SetCursorPos(cx, cy)
+            time.sleep(duration / steps)
+        # Release button
+        inp_up = INPUT()
+        inp_up.type = INPUT_MOUSE
+        inp_up.union.mi.dwFlags = up_flag
+        _send_input(inp_up)
 
     def mouse_scroll(self, clicks: int) -> None:
-        """Scroll mouse wheel. Positive = up (zoom in), negative = down (zoom out)."""
+        """Scroll mouse wheel. Positive = up (zoom in), negative = down (zoom out).
+
+        Sends individual scroll events with small delays so the game registers each one.
+        """
         logger.debug("mouse_scroll: %d clicks", clicks)
-        inp = INPUT()
-        inp.type = INPUT_MOUSE
-        inp.union.mi.mouseData = ctypes.c_ulong(clicks * WHEEL_DELTA).value
-        inp.union.mi.dwFlags = MOUSEEVENTF_WHEEL
-        _send_input(inp)
+        direction = 1 if clicks > 0 else -1
+        for _ in range(abs(clicks)):
+            inp = INPUT()
+            inp.type = INPUT_MOUSE
+            inp.union.mi.mouseData = ctypes.c_ulong(direction * WHEEL_DELTA).value
+            inp.union.mi.dwFlags = MOUSEEVENTF_WHEEL
+            _send_input(inp)
+            time.sleep(0.05)
 
     def mouse_move(self, x: int, y: int) -> None:
         sx, sy = self._screen_xy(x, y)
@@ -223,17 +365,32 @@ class GameInput:
                 self.key_press(args[0])
             elif action_type == "key_hold":
                 self.key_hold(args[0], float(args[1]))
+            elif action_type == "keys_hold":
+                # Format: keys_hold <duration> <key1> <key2> ...
+                duration = float(args[0])
+                keys = args[1:]
+                self.keys_hold(keys, duration)
             elif action_type == "mouse_click":
                 x, y = int(args[0]), int(args[1])
                 button = args[2] if len(args) > 2 else "left"
-                self.mouse_click(x, y, button)
+                modifiers = args[3] if len(args) > 3 else ""
+                self.mouse_click(x, y, button, modifiers)
             elif action_type == "mouse_hold":
                 x, y = int(args[0]), int(args[1])
                 duration = float(args[2]) if len(args) > 2 else 2.0
                 button = args[3] if len(args) > 3 else "right"
-                self.mouse_hold(x, y, duration, button)
+                modifiers = args[4] if len(args) > 4 else ""
+                self.mouse_hold(x, y, duration, button, modifiers)
+            elif action_type == "mouse_drag":
+                x1, y1 = int(args[0]), int(args[1])
+                x2, y2 = int(args[2]), int(args[3])
+                duration = float(args[4]) if len(args) > 4 else 0.5
+                button = args[5] if len(args) > 5 else "left"
+                self.mouse_drag(x1, y1, x2, y2, duration, button)
             elif action_type == "mouse_move":
                 self.mouse_move(int(args[0]), int(args[1]))
+            elif action_type == "scroll":
+                self.mouse_scroll(int(args[0]))
             elif action_type == "zoom_in":
                 clicks = int(args[0]) if args else 3
                 self.mouse_scroll(clicks)
