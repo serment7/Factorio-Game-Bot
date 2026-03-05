@@ -1,0 +1,10 @@
+2026-03-04 13:35:18 [info     ] claude_cli_found               path=C:\Users\yhkim0320\AppData\Local\Microsoft\WinGet\Packages\Anthropic.ClaudeCode_Microsoft.Winget.Source_8wekyb3d8bbwe\claude.EXE
+2026-03-04T04:35:18.326655Z [info     ] knowledge_base_loaded          agent=wiki buildings=33 guides=10 recipes=43 techs=23 templates=12
+2026-03-04T04:35:18.335936Z [info     ] replier_bound                  address=tcp://127.0.0.1:5557 agent=wiki
+2026-03-04T04:35:18.336104Z [info     ] message_bus_started            agent=wiki
+2026-03-04T04:35:18.336163Z [info     ] wiki_agent_started             agent=wiki
+2026-03-04T04:35:50.035635Z [info     ] wiki_query                     agent=wiki query='Factorio: electric motor의 용도와 사용법' source=body
+2026-03-04T04:35:50.036534Z [info     ] wiki_cli_fallback              agent=wiki query='Factorio: electric motor의 용도와 사용법'
+2026-03-04T04:36:22.070334Z [error    ] claude_cli_timeout
+2026-03-04T04:36:30.650327Z [info     ] wiki_query                     agent=wiki query='Factorio: stone의 용도와 사용법' source=body
+2026-03-04T04:36:30.651031Z [info     ] wiki_cli_fallback              agent=wiki query='Factorio: stone의 용도와 사용법'

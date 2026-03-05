@@ -1,0 +1,31 @@
+{
+  "inventory": {
+    "slot_0_0": {
+      "item": "electric_motor",
+      "count": 1,
+      "wiki": "[Claude CLI timed out]",
+      "scanned_at": 1772598982.0723188
+    },
+    "slot_0_1": {
+      "item": "coal",
+      "count": 1,
+      "wiki": "",
+      "scanned_at": 1772598247.8892536
+    },
+    "slot_0_2": {
+      "item": "ore_truck",
+      "count": 1,
+      "wiki": "## Factorio: \"Ore Truck\"에 대하여\n\n**\"Ore Truck\"은 바닐라(기본) Factorio에 존재하지 않는 아이템입니다.**\n\n혹시 다음 중 하나를 말씀하시는 건가요?\n\n---\n\n### 🚗 Car (자동차)\n- 수동으로 운전하며 광석을 소량 운반할 수 있는 차량\n- 트렁크(인벤토리)에 아이템을 실어 운반 가능\n- 초반에 소규모 자원 이동에 사용\n\n### 🚂 Train (기차) — 가장 일반적인 광석 운반 수단\n- **Locomotive** (기관차) + **Cargo Wagon** (화물 칸)으로 구성\n- 대량의 광석을 장거리 운반하는 데 최적\n- 사용법:\n  1. 레일을 깔고 **Train Stop** (기차역)을 설치\n  2. 광산 쪽 역에서 **Inserter**로 광석을 화물칸에 적재\n  3. 공장 쪽 역에서 Inserter로 하역\n  4. 일정표(Schedule)를 설정하여 자동 운행\n\n### 🤖 Logistic Robot (물류 로봇)\n- 로봇이 자동으로 아이템을 운반\n- 중~후반에 사용\n\n---\n\n### 혹시 모드(Mod)를 사용 중이신가요?\n\n일부 모드에서는 \"Ore Truck\" 또는 유사한 차량이 추가됩니다. 사용 중인 모드 이름을 알려주시면 더 정확한 정보를 드릴 수 있습니다.\n\n**어떤 운반 수단에 대해 더 자세히 알고 싶으신가요?**",
+      "scanned_at": 1772598282.337856
+    },
+    "slot_0_3": {
+      "item": "stone_blocks",
+      "count": 43,
+      "wiki": "[Claude CLI timed out]",
+      "scanned_at": 1772598326.9886656
+    }
+  },
+  "crafting": {},
+  "quickbar": {},
+  "saved_at": 1772598982.0726566
+}

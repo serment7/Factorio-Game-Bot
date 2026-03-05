@@ -38,10 +38,13 @@ class ScreenCapture:
         """Find the Factorio window. Returns True if found."""
         result = []
 
+        # Exclude titles that are clearly not the game (e.g. terminals showing the project path)
+        _EXCLUDE = {"Factorio Agent", "Factorio-Game-Bot"}
+
         def _enum_cb(hwnd, _):
             if win32gui.IsWindowVisible(hwnd):
                 title = win32gui.GetWindowText(hwnd)
-                if self.WINDOW_TITLE_KEYWORD in title and title != "Factorio Agent":
+                if title.startswith(self.WINDOW_TITLE_KEYWORD) and not any(ex in title for ex in _EXCLUDE):
                     result.append(hwnd)
             return True
 

@@ -1,0 +1,7 @@
+2026-03-04 13:35:18 [info     ] claude_cli_found               path=C:\Users\yhkim0320\AppData\Local\Microsoft\WinGet\Packages\Anthropic.ClaudeCode_Microsoft.Winget.Source_8wekyb3d8bbwe\claude.EXE
+2026-03-04T04:35:18.248789Z [info     ] publisher_bound                address=tcp://127.0.0.1:5556 agent=brain
+2026-03-04T04:35:18.249069Z [info     ] subscriber_connected           address=tcp://127.0.0.1:5555 agent=brain topics=['state_update', 'emergency_alert', 'plan_progress', 'plan_result']
+2026-03-04T04:35:18.251032Z [info     ] replier_bound                  address=tcp://127.0.0.1:5559 agent=brain
+2026-03-04T04:35:18.251150Z [info     ] message_bus_started            agent=brain
+2026-03-04T04:35:18.251219Z [info     ] goal_set                       agent=brain goal='Explore and gather basic resources' sub_goals=['Walk around to find resource patches', 'Mine nearest resource', 'Open inventory to check what we have']
+2026-03-04T04:35:18.251281Z [info     ] brain_agent_started            agent=brain

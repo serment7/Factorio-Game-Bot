@@ -8,7 +8,7 @@ import requests
 logger = logging.getLogger(__name__)
 
 DEFAULT_URL = "http://localhost:11434"
-DEFAULT_MODEL = "gemma3:4b"
+DEFAULT_MODEL = "qwen3-vl:4b"
 DEFAULT_TIMEOUT = 120
 
 
@@ -22,7 +22,7 @@ class OllamaClient:
         self.timeout = timeout
 
     def chat(self, system_prompt: str, user_text: str,
-             image_b64: str | None = None) -> str:
+             image_b64: str | None = None, model: str | None = None) -> str:
         """Send a chat request and return the assistant's response text."""
         messages = [
             {"role": "system", "content": system_prompt},
@@ -33,10 +33,10 @@ class OllamaClient:
         messages.append(user_msg)
 
         payload = {
-            "model": self.model,
+            "model": model or self.model,
             "messages": messages,
             "stream": False,
-            "options": {"num_predict": 1024},
+            "options": {"num_predict": 512},
             "think": False,
         }
 

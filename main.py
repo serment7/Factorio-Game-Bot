@@ -1,4 +1,4 @@
-"""Entry point for Factorio Agent."""
+"""Entry point — starts the Factorio MCP server (stdio transport)."""
 
 import logging
 import sys
@@ -8,7 +8,7 @@ project_root = Path(__file__).parent
 if str(project_root) not in sys.path:
     sys.path.insert(0, str(project_root))
 
-from gui.launcher import LauncherGUI
+from mcp_server.server import mcp
 
 
 def main():
@@ -17,8 +17,7 @@ def main():
         format="%(asctime)s [%(name)s] %(levelname)s: %(message)s",
         datefmt="%H:%M:%S",
     )
-    app = LauncherGUI()
-    app.run()
+    mcp.run(transport="stdio")
 
 
 if __name__ == "__main__":

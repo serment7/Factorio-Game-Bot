@@ -1,0 +1,38 @@
+2026-03-04 13:35:25 [info     ] ui_knowledge_loaded            craft=0 inv=4 path=data\ui_knowledge.json qbar=0
+2026-03-04T04:35:26.160842Z [info     ] factorio_window_found          agent=body pos=961,31 size=958x1000 title='Factorio: Space Age 2.0.73'
+2026-03-04T04:35:26.161021Z [info     ] screen_capture_started         agent=body fps=5 window={'hwnd': 3474006, 'title': 'Factorio: Space Age 2.0.73', 'left': 961, 'top': 31, 'width': 958, 'height': 1000}
+2026-03-04T04:35:26.161096Z [info     ] resolution_set                 agent=body height=1000 width=958
+2026-03-04T04:35:26.170407Z [info     ] publisher_bound                address=tcp://127.0.0.1:5555 agent=body
+2026-03-04T04:35:26.170663Z [info     ] subscriber_connected           address=tcp://127.0.0.1:5556 agent=body topics=['strategic_command', 'tactical_command']
+2026-03-04T04:35:26.171595Z [info     ] requester_connected            address=tcp://127.0.0.1:5557 agent=body
+2026-03-04T04:35:26.172421Z [info     ] requester_connected            address=tcp://127.0.0.1:5559 agent=body
+2026-03-04T04:35:26.172532Z [info     ] message_bus_started            agent=body
+2026-03-04T04:35:26.182942Z [info     ] learning_memory_loaded         agent=body count=35
+2026-03-04T04:35:26.183047Z [info     ] body_agent_started             agent=body
+2026-03-04T04:35:26.219118Z [info     ] decision_made                  action=scan_inventory agent=body count=1 reasoning='시작 — 슬롯별 툴팁 스캔으로 정확한 인벤토리 확인'
+2026-03-04T04:35:26.219293Z [info     ] executing_direct               action=scan_inventory agent=body
+2026-03-04T04:35:26.219352Z [info     ] gui_scan_inventory_start       agent=body
+2026-03-04T04:35:32.610134Z [info     ] factorio_window_found          agent=body pos=961,31 size=958x1000 title='Factorio: Space Age 2.0.73'
+2026-03-04T04:35:39.082005Z [info     ] factorio_window_found          agent=body pos=961,31 size=958x1000 title='Factorio: Space Age 2.0.73'
+2026-03-04T04:35:42.417509Z [warning  ] ollama_slow_response           agent=body elapsed_ms=14914 target_ms=3000
+2026-03-04T04:35:45.514902Z [info     ] factorio_window_found          agent=body pos=961,31 size=958x1000 title='Factorio: Space Age 2.0.73'
+2026-03-04T04:35:49.118959Z [warning  ] ollama_slow_response           agent=body elapsed_ms=22926 target_ms=3000
+2026-03-04T04:35:49.120126Z [info     ] state_changes_detected         agent=body changes=['resources_detected']
+2026-03-04T04:35:49.120199Z [info     ] vision_changes                 agent=body changes=['resources_detected']
+2026-03-04T04:35:50.033640Z [warning  ] ollama_slow_response           agent=body elapsed_ms=7148 target_ms=3000
+2026-03-04T04:35:51.937604Z [info     ] factorio_window_found          agent=body pos=961,31 size=958x1000 title='Factorio: Space Age 2.0.73'
+2026-03-04T04:35:57.367533Z [warning  ] ollama_slow_response           agent=body elapsed_ms=7231 target_ms=3000
+2026-03-04T04:35:58.369470Z [info     ] factorio_window_found          agent=body pos=961,31 size=958x1000 title='Factorio: Space Age 2.0.73'
+2026-03-04T04:36:04.869088Z [info     ] factorio_window_found          agent=body pos=961,31 size=958x1000 title='Factorio: Space Age 2.0.73'
+2026-03-04T04:36:05.188335Z [warning  ] ollama_slow_response           agent=body elapsed_ms=6812 target_ms=3000
+2026-03-04T04:36:11.295265Z [info     ] factorio_window_found          agent=body pos=961,31 size=958x1000 title='Factorio: Space Age 2.0.73'
+2026-03-04T04:36:13.130904Z [warning  ] ollama_slow_response           agent=body elapsed_ms=6930 target_ms=3000
+2026-03-04T04:36:17.708230Z [info     ] factorio_window_found          agent=body pos=961,31 size=958x1000 title='Factorio: Space Age 2.0.73'
+2026-03-04T04:36:21.321798Z [warning  ] ollama_slow_response           agent=body elapsed_ms=7129 target_ms=3000
+2026-03-04T04:36:22.071918Z [info     ] wiki_response                  agent=body answer='[Claude CLI timed out]'
+2026-03-04T04:36:22.072155Z [info     ] gui_wiki_queried               agent=body answer='[Claude CLI timed out]' item=electric_motor
+2026-03-04T04:36:22.073868Z [info     ] gui_scan_inv_slot              agent=body col=0 count=1 item=electric_motor row=0
+2026-03-04T04:36:24.009272Z [info     ] factorio_window_found          agent=body pos=961,31 size=958x1000 title='Factorio: Space Age 2.0.73'
+2026-03-04T04:36:29.741126Z [warning  ] ollama_slow_response           agent=body elapsed_ms=7397 target_ms=3000
+2026-03-04T04:36:30.520819Z [info     ] factorio_window_found          agent=body pos=961,31 size=958x1000 title='Factorio: Space Age 2.0.73'
+2026-03-04T04:36:30.649582Z [warning  ] ollama_slow_response           agent=body elapsed_ms=6914 target_ms=3000
